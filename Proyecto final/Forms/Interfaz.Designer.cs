@@ -32,7 +32,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,7 +46,6 @@
             this.panelLateral.Controls.Add(this.pictureBox1);
             this.panelLateral.Controls.Add(this.button5);
             this.panelLateral.Controls.Add(this.button4);
-            this.panelLateral.Controls.Add(this.button3);
             this.panelLateral.Controls.Add(this.button2);
             this.panelLateral.Controls.Add(this.button1);
             this.panelLateral.Controls.Add(this.label1);
@@ -76,12 +74,13 @@
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button5.Location = new System.Drawing.Point(0, 507);
+            this.button5.Location = new System.Drawing.Point(0, 348);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(194, 62);
             this.button5.TabIndex = 24;
             this.button5.Text = " Encargos";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button4
             // 
@@ -91,28 +90,12 @@
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button4.Location = new System.Drawing.Point(-3, 429);
+            this.button4.Location = new System.Drawing.Point(0, 428);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(197, 62);
             this.button4.TabIndex = 23;
             this.button4.Text = "Recibos";
             this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.MediumSpringGreen;
-            this.button3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.MintCream;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(0, 348);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(200, 62);
-            this.button3.TabIndex = 22;
-            this.button3.Text = "Facturas";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -192,7 +175,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Panel panelContenedor;
         private System.Windows.Forms.PictureBox pictureBox1;
         

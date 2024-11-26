@@ -79,12 +79,6 @@
       <DependentUpon>Clientes.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Database.cs" />
-    <Compile Include="Forms\Encargo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Encargo.Designer.cs">
-      <DependentUpon>Encargo.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Interfaz.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,19 +97,16 @@
     <Compile Include="Forms\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Facturas.cs">
+    <Compile Include="Forms\Encargo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Facturas.Designer.cs">
-      <DependentUpon>Facturas.cs</DependentUpon>
+    <Compile Include="Forms\Encargo.Designer.cs">
+      <DependentUpon>Encargo.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Clientes.resx">
       <DependentUpon>Clientes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Encargo.resx">
-      <DependentUpon>Encargo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Interfaz.resx">
       <DependentUpon>Interfaz.cs</DependentUpon>
@@ -126,8 +117,8 @@
     <EmbeddedResource Include="Forms\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Facturas.resx">
-      <DependentUpon>Facturas.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Encargo.resx">
+      <DependentUpon>Encargo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

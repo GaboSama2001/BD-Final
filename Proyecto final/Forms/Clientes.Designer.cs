@@ -40,6 +40,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnMinimizar = new System.Windows.Forms.Label();
+            this.btnCerrar = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewClientes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -170,11 +172,36 @@
             this.label2.Text = "Lista de Clientes";
             this.label2.UseWaitCursor = true;
             // 
+            // btnMinimizar
+            // 
+            this.btnMinimizar.AutoSize = true;
+            this.btnMinimizar.Font = new System.Drawing.Font("Bookman Old Style", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMinimizar.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.btnMinimizar.Location = new System.Drawing.Point(489, 9);
+            this.btnMinimizar.Name = "btnMinimizar";
+            this.btnMinimizar.Size = new System.Drawing.Size(25, 20);
+            this.btnMinimizar.TabIndex = 44;
+            this.btnMinimizar.Text = "__\r\n";
+            this.btnMinimizar.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // btnCerrar
+            // 
+            this.btnCerrar.AutoSize = true;
+            this.btnCerrar.Font = new System.Drawing.Font("Bookman Old Style", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCerrar.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.btnCerrar.Location = new System.Drawing.Point(520, 9);
+            this.btnCerrar.Name = "btnCerrar";
+            this.btnCerrar.Size = new System.Drawing.Size(21, 20);
+            this.btnCerrar.TabIndex = 43;
+            this.btnCerrar.Text = "X";
+            // 
             // Clientes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(553, 593);
+            this.Controls.Add(this.btnMinimizar);
+            this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.txtCelular);
             this.Controls.Add(this.txtCedula);
             this.Controls.Add(this.txtNombre);
@@ -212,5 +239,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label btnMinimizar;
+        private System.Windows.Forms.Label btnCerrar;
     }
 }
