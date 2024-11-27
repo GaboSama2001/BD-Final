@@ -33,7 +33,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnSignup = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.btnCerrar = new System.Windows.Forms.Label();
             this.btnMinimizar = new System.Windows.Forms.Label();
@@ -100,7 +99,6 @@
             this.panel1.BackgroundImage = global::Proyecto_final.Properties.Resources.logo_removebg_preview;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.btnSignup);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -108,22 +106,6 @@
             this.panel1.Size = new System.Drawing.Size(261, 357);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-            // 
-            // btnSignup
-            // 
-            this.btnSignup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.btnSignup.FlatAppearance.BorderSize = 0;
-            this.btnSignup.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.btnSignup.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnSignup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSignup.Font = new System.Drawing.Font("Bookman Old Style", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSignup.ForeColor = System.Drawing.SystemColors.Control;
-            this.btnSignup.Location = new System.Drawing.Point(54, 311);
-            this.btnSignup.Name = "btnSignup";
-            this.btnSignup.Size = new System.Drawing.Size(145, 33);
-            this.btnSignup.TabIndex = 12;
-            this.btnSignup.Text = "SIGNUP";
-            this.btnSignup.UseVisualStyleBackColor = false;
             // 
             // label4
             // 
@@ -232,7 +214,6 @@
         private System.Windows.Forms.Label btnMinimizar;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnLogin;
-        private System.Windows.Forms.Button btnSignup;
     }
 }
 

@@ -51,18 +51,37 @@ namespace Proyecto_final.Forms
                 }
             }
         }
-        private void CargarClientes()
+        private void CargarClientes(String filtro = "")
         {
             using (SqlConnection conn = db.GetConnection())
             {
                 conn.Open();
+                // Modificamos la consulta para que acepte un filtro en el nombre o ID
                 string query = "SELECT ID, Cedula, Nombre, Celular FROM Cliente";
-                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+
+                // Agregar filtro de búsqueda si se ha introducido texto
+                if (!string.IsNullOrEmpty(filtro))
+                {
+                    query += " WHERE Nombre LIKE @Filtro OR CAST(ID AS NVARCHAR) LIKE @Filtro";
+                }
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                // Si hay filtro, añadimos el parámetro
+                if (!string.IsNullOrEmpty(filtro))
+                {
+                    cmd.Parameters.AddWithValue("@Filtro", $"%{filtro}%");
+                }
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
+
+                // Actualizar el DataGridView con los resultados filtrados
                 dataGridViewClientes.DataSource = dt;
             }
         }
+        
 
         private void Clientes_Load(object sender, EventArgs e)
         {
@@ -192,6 +211,32 @@ namespace Proyecto_final.Forms
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBuscarCliente_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = txtBuscarCliente.Text.Trim();
+            CargarClientes(filtro);
+        }
+
+        private void Actualizar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAgregar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEliminar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
         {
 
         }

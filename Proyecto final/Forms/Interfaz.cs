@@ -13,9 +13,11 @@ namespace Proyecto_final.Forms
 
     public partial class Interfaz : Form
     {
-        public Interfaz()
+        private String username;
+        public Interfaz(String username)
         {
             InitializeComponent();
+            this.username = username;
         }
         private void AbrirFormEnPanel(object Formhijo)
         {
@@ -69,7 +71,22 @@ namespace Proyecto_final.Forms
 
         private void button3_Click(object sender, EventArgs e)
         {
-            AbrirFormEnPanel(new Facturas());
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+                        AbrirFormEnPanel(new Encargo(username));
+        }
+
+        private void panelContenedor_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

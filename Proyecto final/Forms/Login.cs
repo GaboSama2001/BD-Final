@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Proyecto_final.Forms;
+using System.Data.SqlClient;
 
 namespace Proyecto_final
 {
@@ -24,6 +25,41 @@ namespace Proyecto_final
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hwnd, int wmsg, int wparam, int lparam);
 
+        private void Inicio()
+        {
+            string username = txtUsername.Text.Trim();
+            string password = txtPassword.Text.Trim();
+
+            if (username == "USERNAME" || string.IsNullOrEmpty(username))
+            {
+                MessageBox.Show("Por favor, ingrese un nombre de usuario válido.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (password == "PASSWORD" || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Por favor, ingrese una contraseña válida.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Validar credenciales en la base de datos
+            bool credencialesValidas = ValidarCredenciales(username, password);
+
+            if (!credencialesValidas)
+            {
+                MessageBox.Show("El nombre o la contraseña son incorrectos.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+           
+     
+        
+
+        Interfaz interfaz = new Interfaz(username);
+            interfaz.Show();
+            this.Hide(); // Ocultar el formulario actual
+        }
+ 
         private void label2_Click(object sender, EventArgs e)
         {
 
@@ -131,11 +167,29 @@ namespace Proyecto_final
         {
 
         }
+        private bool ValidarCredenciales(string username, string password)
+        {
+            using (SqlConnection conn = new SqlConnection("Server=WIN-H1P8F3D3IAS\\SQLEXPRESS;Database=db;Trusted_Connection=True;"))
+
+
+            {
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM Empleado WHERE Nombre = @username AND Contraseña = @password";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+
+                    int result = (int)cmd.ExecuteScalar();
+                    return result > 0; // Si el resultado es mayor que 0, las credenciales son válidas
+                }
+            }
+        }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-          Interfaz interfaz = new Interfaz();  
-            interfaz.ShowDialog();
+
+            Inicio();
         }
 
         private void btnMinimizar_Click(object sender, EventArgs e)
