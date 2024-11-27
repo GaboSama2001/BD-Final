@@ -1,13 +1,7 @@
-﻿using Proyecto_final.Forms;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Proyecto_final
@@ -15,17 +9,17 @@ namespace Proyecto_final
     public partial class Encargo : Form
     {
         Database db = new Database();
-        private int idVendedor;
+        private String username;
 
-        public Encargo(int usuario)
+        public Encargo(String username)
         {
             InitializeComponent();
             ConfigurarCarrito();
             CargarProductos();
-            this.idVendedor = usuario;
+            this.username = username;
         }
 
- 
+
 
         private List<DataRow> carrito = new List<DataRow>();
         private decimal total = 0; // Para calcular el total
@@ -95,7 +89,7 @@ namespace Proyecto_final
             dataGridViewCarrito.Columns.Clear();
 
             // Agregar columnas al DataGridView del carrito
-          
+
             dataGridViewCarrito.Columns.Add("Nombre", "Producto");
             dataGridViewCarrito.Columns.Add("Precio", "Precio Unitario");
             dataGridViewCarrito.Columns.Add("Cantidad", "Cantidad");
@@ -137,8 +131,7 @@ namespace Proyecto_final
         }
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
-            string filtro = txtBuscar.Text;
-            CargarProductos(filtro);
+
         }
 
         private void dataGridViewProductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -154,13 +147,15 @@ namespace Proyecto_final
             this.clienteTableAdapter1.Fill(this.dbDataSet1.Cliente);
             // TODO: esta línea de código carga datos en la tabla 'dbDataSet1.Cliente' Puede moverla o quitarla según sea necesario.
             this.clienteTableAdapter1.Fill(this.dbDataSet1.Cliente);
+            // TODO: esta línea de código carga datos en la tabla 'dbDataSet1.Cliente' Puede moverla o quitarla según sea necesario.
+            this.clienteTableAdapter1.Fill(this.dbDataSet1.Cliente);
         }
 
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AgregarProductoAlCarrito();
+
 
         }
 
@@ -205,6 +200,167 @@ namespace Proyecto_final
                 return;
             }
 
+            // Obtener el cliente seleccionado
+            var clienteNombre = (cbCliente.SelectedItem as DataRowView)["Nombre"].ToString(); // Nombre del cliente
+            if (!decimal.TryParse(txtTotal.Text, out decimal total))
+            {
+                MessageBox.Show("El total no es válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Nombre del vendedor (suponiendo que `username` ya contiene el nombre del vendedor actual)
+            string vendedorNombre = username; // Asegúrate de que esta variable tenga el nombre, no el ID
+
+            // Conexión a la base de datos
+            using (SqlConnection conn = db.GetConnection())
+            {
+                conn.Open();
+                using (SqlTransaction trans = conn.BeginTransaction()) // Usar transacción para mayor seguridad
+                {
+                    try
+                    {
+                        // Insertar encabezado del recibo
+                        string queryRecibo = @"
+                INSERT INTO Recibo (Comprador, Vendedor, FechaHora, Monto)
+                OUTPUT INSERTED.Numero
+                VALUES (@Comprador, @Vendedor, @FechaHora, @Monto)";
+
+                        SqlCommand cmdRecibo = new SqlCommand(queryRecibo, conn, trans);
+                        cmdRecibo.Parameters.AddWithValue("@Comprador", clienteNombre); // Nombre del cliente
+                        cmdRecibo.Parameters.AddWithValue("@Vendedor", vendedorNombre); // Nombre del vendedor
+                        cmdRecibo.Parameters.AddWithValue("@FechaHora", DateTime.Now);
+                        cmdRecibo.Parameters.AddWithValue("@Monto", total);
+
+                        // Obtener el Número del recibo generado automáticamente
+                        int numeroRecibo = (int)cmdRecibo.ExecuteScalar();
+
+                        // Insertar detalles del recibo
+                        foreach (DataGridViewRow row in dataGridViewCarrito.Rows)
+                        {
+                            if (row.Cells["Codigo"].Value == null || row.Cells["Cantidad"].Value == null || row.Cells["Subtotal"].Value == null)
+                            {
+                                throw new Exception("El carrito contiene datos inválidos.");
+                            }
+
+                            int codigoProducto = Convert.ToInt32(row.Cells["Codigo"].Value);
+                            int cantidad = Convert.ToInt32(row.Cells["Cantidad"].Value);
+                            decimal subtotal = Convert.ToDecimal(row.Cells["Subtotal"].Value);
+
+                            string queryDetalle = @"
+                    INSERT INTO DetalleRecibo (NumeroRecibo, CodigoProducto, CantidadComprada, Total)
+                    VALUES (@NumeroRecibo, @CodigoProducto, @CantidadComprada, @Total)";
+
+                            SqlCommand cmdDetalle = new SqlCommand(queryDetalle, conn, trans);
+                            cmdDetalle.Parameters.AddWithValue("@NumeroRecibo", numeroRecibo);
+                            cmdDetalle.Parameters.AddWithValue("@CodigoProducto", codigoProducto);
+                            cmdDetalle.Parameters.AddWithValue("@CantidadComprada", cantidad);
+                            cmdDetalle.Parameters.AddWithValue("@Total", subtotal);
+
+                            cmdDetalle.ExecuteNonQuery();
+                        }
+
+                        // Confirmar la transacción
+                        trans.Commit();
+                        MessageBox.Show($"Factura generada con éxito. Número de recibo: {numeroRecibo}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // Limpiar carrito y total
+                        dataGridViewCarrito.Rows.Clear();
+                        txtTotal.Text = "0.00";
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback(); // Deshacer cambios en caso de error
+                        MessageBox.Show("Error al generar la factura: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+
+
+            // Limpiar el formulario después de la facturación
+            LimpiarFormulario();
+        }
+
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            EliminarProductoDelCarrito();
+
+        }
+
+        private void dataGridViewCarrito_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ConfigurarCarrito();
+        }
+
+        private void panel2_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBuscar1_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = txtBuscar.Text;
+            CargarProductos(filtro);
+        }
+
+        private void guna2Button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtTotal_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2Button1_Click_2(object sender, EventArgs e)
+        {
+            AgregarProductoAlCarrito();
+        }
+
+        private void guna2Button2_Click(object sender, EventArgs e)
+        {
+
+            // Verificar si se seleccionó un cliente
+            if (cbCliente.SelectedItem == null)
+            {
+                MessageBox.Show("Seleccione un cliente antes de facturar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Verificar si hay productos en el carrito
+            if (dataGridViewCarrito.Rows.Count == 0)
+            {
+                MessageBox.Show("El carrito está vacío. Agregue productos antes de facturar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
 
             // Obtener el cliente seleccionado
             var cliente = (cbCliente.SelectedItem as DataRowView)["ID"].ToString(); // ID del cliente
@@ -230,7 +386,7 @@ namespace Proyecto_final
 
                         SqlCommand cmdRecibo = new SqlCommand(queryRecibo, conn, trans);
                         cmdRecibo.Parameters.AddWithValue("@Comprador", cliente);
-                        cmdRecibo.Parameters.AddWithValue("@Vendedor", idVendedor); // Agregar el ID del vendedor
+                        cmdRecibo.Parameters.AddWithValue("@Vendedor", username); // Agregar el ID del vendedor
                         cmdRecibo.Parameters.AddWithValue("@FechaHora", DateTime.Now);
                         cmdRecibo.Parameters.AddWithValue("@Monto", total);
 
@@ -282,34 +438,56 @@ namespace Proyecto_final
             LimpiarFormulario();
         }
 
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
+        private void guna2Button3_Click(object sender, EventArgs e)
         {
             EliminarProductoDelCarrito();
-
         }
 
-        private void dataGridViewCarrito_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            ConfigurarCarrito();
-        }
-
-        private void panel2_Paint_1(object sender, PaintEventArgs e)
+        private void cbCliente_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void guna2PictureBox1_Click(object sender, EventArgs e)
         {
+            int cantidad = 0;
+
+            // Verificar que el TextBox tenga un valor válido
+            if (!int.TryParse(txtCantidad.Text, out cantidad))
+            {
+                MessageBox.Show("Por favor, ingrese un valor numérico válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            cantidad++; // Incrementar
+            txtCantidad.Text = cantidad.ToString(); // Actualizar el TextBox
 
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void guna2PictureBox2_Click(object sender, EventArgs e)
+        {
+            int cantidad = 0;
+
+            // Verificar que el TextBox tenga un valor válido
+            if (!int.TryParse(txtCantidad.Text, out cantidad))
+            {
+                MessageBox.Show("Por favor, ingrese un valor numérico válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (cantidad > 0) // Evitar que sea menor a 0
+            {
+                cantidad--; // Decrementar
+            }
+            else
+            {
+                MessageBox.Show("La cantidad no puede ser menor a 0.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            txtCantidad.Text = cantidad.ToString();
+        }
+
+        private void txtCantidad_TextChanged(object sender, EventArgs e)
         {
 
         }

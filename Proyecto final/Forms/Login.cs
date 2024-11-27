@@ -52,37 +52,10 @@ namespace Proyecto_final
             }
 
            
-            int idVendedor = 0; // Valor predeterminado en caso de que no se encuentre el vendedor
-
-            // Usar la conexión a la base de datos
-            using (SqlConnection conn = new SqlConnection("Server=WIN-H1P8F3D3IAS\\SQLEXPRESS;Database=db;Trusted_Connection=True;"))
-            {
-                conn.Open();
-
-                // Consulta SQL para obtener el ID del vendedor según su nombre
-                string query = "SELECT ID FROM Empleado WHERE Nombre = @Nombre";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    // Agregar el parámetro para el nombre del vendedor
-                    cmd.Parameters.AddWithValue("@Nombre", username);
-
-                    // Ejecutar la consulta y obtener el ID del vendedor
-                    object result = cmd.ExecuteScalar();  // Ejecutar la consulta y obtener el valor
-
-                    // Verificar si se obtuvo un valor (es decir, si el vendedor fue encontrado)
-                    if (result != null)
-                    {
-                        idVendedor = Convert.ToInt32(result); // Convertir el valor a int
-                    }
-
-                }
-            }
-
-          // Devuelve el ID del vendedor o 0 si no se encontró
+     
         
 
-        Interfaz interfaz = new Interfaz(idVendedor);
+        Interfaz interfaz = new Interfaz(username);
             interfaz.Show();
             this.Hide(); // Ocultar el formulario actual
         }
